@@ -47,6 +47,7 @@ jobs:
 
     - name: commit
       run: |
+        git switch -c docs
         git add docs/*
         git commit -m "Build new docs [skip ci]"
-        git push origin ${{ github.branch }}
+        git push origin docs
