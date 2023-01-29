@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "yaml-parser"
-version = "0.16.0"
+version = "0.17.0"
 description = "A biblioteca desenvolvida auxilia desenvolvedores a explorar os dados com funções essenciais para a identificação de outliers e anomalias e uma interface que auxilia a visualizar as informações de acordo com o arquivo de configuração."
 authors = ["Italo Vinicius <italovinicius18@yahoo.com>"]
 readme = "README.md"
