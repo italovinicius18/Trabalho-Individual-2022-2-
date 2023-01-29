@@ -1,4 +1,4 @@
-name: Build and Publish Documentation
+name: Build Docs
 
 on:
   push:
@@ -23,7 +23,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install --upgrade -r requirements.txt
         pip install sphinx
-        apt-get install doxygen
+        pip install sphinx_autodoc_typehints
+        sudo apt-get install doxygen
 
     - name: Run Doxygen
       run: |
