@@ -2,8 +2,9 @@ name: Build Docs
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main,cd ]
+  pull_request:
+    branches: [ main,cd ]
 
 jobs:
   build-and-publish-docs:
@@ -12,6 +13,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.PAT }}
 
     - name: Setup Python
       uses: actions/setup-python@v2
@@ -36,3 +39,15 @@ jobs:
         cd docs
         sphinx-apidoc -f -o . ../src/
         make html
+
+    - name: setup git config
+      run: |
+        git config user.name "GitHub Actions - New build docs"
+        git config user.email "<>"
+
+    - name: commit
+      run: |
+        git switch -c docs
+        git add docs/*
+        git commit -m "Build new docs [skip ci]"
+        git push origin docs

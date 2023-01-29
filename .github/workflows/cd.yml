@@ -1,0 +1,55 @@
+name: CD - PyPi build and publish
+
+on:
+  push:
+    branches: [ main,cd ]
+  pull_request:
+    branches: [ main,cd ]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.PAT }}
+      
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+      
+    - name: Instalar requirements
+      run: pip install -r requirements.txt
+    
+    - name: Instalando poetry
+      run: pip install poetry
+
+    - name: Atualizar versão minor
+      run: poetry version minor
+
+    - name: Escrever a versão no pyproject.toml
+      run: |
+        version=$(poetry version | awk '{print $2}')
+        sed -i "s/^version = \".*\"/version = \"$version\"/" pyproject.toml
+
+    - name: Configurando token PyPi
+      run: poetry config pypi-token.pypi ${{ secrets.PYPI }}
+      env:
+        PYPI: ${{ secrets.PYPI }}
+      
+    - name: Publish to PyPi
+      run: poetry publish --build
+
+    - name: setup git config
+      run: |
+        git config user.name "GitHub Actions - Poetry publish PyPi"
+        git config user.email "<>"
+
+    - name: commit
+      run: |
+        git add pyproject.toml poetry.lock dist/*
+        git commit -m "Publish to PyPi new version [skip ci]"
+        git push origin ${{ github.branch }}
