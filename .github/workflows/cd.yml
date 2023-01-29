@@ -52,4 +52,4 @@ jobs:
       run: |
         git add pyproject.toml poetry.lock dist/*
         git commit -m "Publish to PyPi new version - $version"
-        git push origin {{ github.branch }}
+        git push origin ${{ github.branch }}
