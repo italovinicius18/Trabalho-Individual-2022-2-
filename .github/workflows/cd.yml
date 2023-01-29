@@ -40,8 +40,8 @@ jobs:
       env:
         PYPI: ${{ secrets.PYPI }}
       
-    - name: Publish to PyPi
-      run: poetry publish --build
+    # - name: Publish to PyPi
+    #   run: poetry publish --build
 
     - name: setup git config
       run: |
