@@ -18,12 +18,12 @@ class ModelParser(ParserBase):
         return self._parse_modal_configs(data)
 
     def _parse_modal_configs(self, data: list):
-        if(not data):
+        if (not data):
             return
 
         random_forest = data.get('random_forest')
 
-        if(random_forest):
+        if (random_forest):
             return self.get_random_forest_address_config(random_forest)
 
     def get_random_forest_address_config(self, model: list):
@@ -54,7 +54,7 @@ class ModelParser(ParserBase):
         columns_set_alias = self._try_get(input, 'columns')
 
         for alias in columns_set_alias:
-            if(not(alias in self.columns_alias)):
+            if (not (alias in self.columns_alias)):
                 raise ValueError(
                     f'`{alias}` column not match with the available columns')
 
@@ -72,12 +72,12 @@ class ModelParser(ParserBase):
             thresholds, 'keyboard_smash', keyboard_smash_default)
 
         for key in keyboard_smash.keys():
-            if(not(key in columns_set_alias)):
+            if (not (key in columns_set_alias)):
                 raise ValueError(
                     f'`{key}` key not match with the available columns')
 
         for alias in columns_set_alias:
-            if(not(alias in keyboard_smash.keys())):
+            if (not (alias in keyboard_smash.keys())):
                 keyboard_smash.append(
                     {alias: self.default_keyboard_smash_values})
 

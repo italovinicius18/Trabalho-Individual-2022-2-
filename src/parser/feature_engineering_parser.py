@@ -7,7 +7,7 @@ class FeatureEngineeringParser(ParserBase):
         return self._parse_feature_engineering_configs(data)
 
     def _parse_feature_engineering_configs(self, data: list):
-        if(not data):
+        if (not data):
             return
 
         configs = []
@@ -28,7 +28,7 @@ class FeatureEngineeringParser(ParserBase):
 
             # Enabled features
             enabled_features = keyboard_smash
-            if(not dimensions):
+            if (not dimensions):
                 enabled_features['word_embedding'] = False
             else:
                 enabled_features['word_embedding'] = True
@@ -44,7 +44,7 @@ class FeatureEngineeringParser(ParserBase):
         return configs, columns_set_alias
 
     def _get_dataframe(self, columns: dict):
-        if(not columns):
+        if (not columns):
             return
 
         columns_alias = []
@@ -56,7 +56,7 @@ class FeatureEngineeringParser(ParserBase):
         return columns, columns_alias
 
     def _get_features_details(self, features: dict):
-        if(not features):
+        if (not features):
             return
 
         word_embedding = self._try_get(features, 'word_embedding')
@@ -68,7 +68,7 @@ class FeatureEngineeringParser(ParserBase):
         return word_embedding, keyboard_smash
 
     def _get_word_embedding_config(self, feature: dict, columns_alias: list):
-        if(not feature):
+        if (not feature):
             return 'es', None
 
         data_lang = self._get(feature, 'data_lang', 'es')
@@ -78,7 +78,7 @@ class FeatureEngineeringParser(ParserBase):
         dimensions = {}
         dimensions_default_value = 25
         for key, item in feature.items():
-            if(not(key in columns_alias)):
+            if (not (key in columns_alias)):
                 error_msg = f'Label {key} not match'
                 raise ValueError(error_msg)
 
@@ -86,7 +86,7 @@ class FeatureEngineeringParser(ParserBase):
                 item, 'dimensions', dimensions_default_value)
 
         for name in columns_alias:
-            if(not(name in dimensions)):
+            if (not (name in dimensions)):
                 dimensions[name] = dimensions_default_value
 
         return data_lang, dimensions
@@ -106,7 +106,7 @@ class FeatureEngineeringParser(ParserBase):
             return keyboard_smash
 
         for key in keyboard_smash.keys():
-            if(key in keyboard_smash_default_value and keyboard_smash[key] == 'off'):
+            if (key in keyboard_smash_default_value and keyboard_smash[key] == 'off'):
                 keyboard_smash_default_value[key] = False
 
         return keyboard_smash_default_value
