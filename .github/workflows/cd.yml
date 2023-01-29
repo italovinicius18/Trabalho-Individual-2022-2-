@@ -43,12 +43,13 @@ jobs:
     - name: Publish to PyPi
       run: poetry publish --build
 
-    - name: Commit and push
-      uses: actions/checkout@v3
+    - name: setup git config
       run: |
-          date > generated.txt
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add .
-          git commit -m "Updated version"
-          git push
+        git config user.name "GitHub Actions - Poetry publish PyPi"
+        git config user.email "<>"
+
+    - name: commit
+      run: |
+        git add pyproject.toml poetry.lock dist/*
+        git commit -m "Publish to PyPi new version - $version"
+        git push origin {{ github.branch }}
