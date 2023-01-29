@@ -43,6 +43,7 @@ jobs:
     - name: Publish to PyPi
       run: poetry publish --build
 
+    - name: Commit and push
     - uses: actions/checkout@v3
       - run: |
           date > generated.txt
