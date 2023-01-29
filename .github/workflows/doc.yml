@@ -47,6 +47,6 @@ jobs:
 
     - name: commit
       run: |
-        git add pyproject.toml poetry.lock dist/*
+        git add docs/*
         git commit -m "Build new docs [skip ci]"
         git push origin ${{ github.branch }}
