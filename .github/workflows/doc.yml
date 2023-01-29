@@ -12,6 +12,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.PAT }}
 
     - name: Setup Python
       uses: actions/setup-python@v2
@@ -36,3 +38,14 @@ jobs:
         cd docs
         sphinx-apidoc -f -o . ../src/
         make html
+
+    - name: setup git config
+      run: |
+        git config user.name "GitHub Actions - New build docs"
+        git config user.email "<>"
+
+    - name: commit
+      run: |
+        git add pyproject.toml poetry.lock dist/*
+        git commit -m "Build new docs"
+        git push origin ${{ github.branch }}
