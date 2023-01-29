@@ -48,6 +48,7 @@ jobs:
     - name: commit
       run: |
         git switch -c docs
+        git pull origin docs
         git add docs/*
         git commit -m "Build new docs [skip ci]"
         git push origin docs
