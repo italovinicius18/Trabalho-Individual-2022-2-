@@ -1,10 +1,10 @@
-name: Build and Publish to PyPi
+name: CD - PyPi build and publish
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main,cd ]
   pull_request:
-    branches: [ main ]
+    branches: [ main,cd ]
 
 jobs:
   build-and-publish:
@@ -13,6 +13,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.PAT }}
       
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -28,8 +30,10 @@ jobs:
     - name: Atualizar versão minor
       run: poetry version minor
 
-    - name: Build package
-      run: poetry build
+    - name: Escrever a versão no pyproject.toml
+      run: |
+        version=$(poetry version | awk '{print $2}')
+        sed -i "s/^version = \".*\"/version = \"$version\"/" pyproject.toml
 
     - name: Configurando token PyPi
       run: poetry config pypi-token.pypi ${{ secrets.PYPI }}
@@ -37,4 +41,13 @@ jobs:
         PYPI: ${{ secrets.PYPI }}
       
     - name: Publish to PyPi
-      run: poetry publish
+      run: poetry publish --build
+
+    - uses: actions/checkout@v3
+      - run: |
+          date > generated.txt
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Updated version"
+          git push
